@@ -9,8 +9,8 @@ import UIKit
 
 class ManageCitiesViewController: UITableViewController {
 
-    let cities = [CurrentWeather(cityName: "Москва", temperature: 10, description: "Облачно"),
-                  CurrentWeather(cityName: "Нижний Новгород", temperature: 15, description: "Облачно1")
+    var cities = [City(cityName: "Москва", temperature: 10, description: "Облачно"),
+                  City(cityName: "Нижний Новгород", temperature: 15, description: "Облачно1")
     ]
     /*@IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var temperatureLabel: UILabel!
@@ -19,7 +19,9 @@ class ManageCitiesViewController: UITableViewController {
 
     @IBAction func TemperatureControl(_ sender: UISegmentedControl) {
     }*/
-    
+    func deleteObject(_ city: City) {
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,9 +44,17 @@ class ManageCitiesViewController: UITableViewController {
     
     // MARK: - Table view delegate
     
-    /*override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 85
-    }*/
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        //let city = cities[indexPath.row]
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (_, _, _) in
+            // TODO: Удалить объект из кор даты
+            self.cities.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+        let deleteActionConfig = UISwipeActionsConfiguration(actions: [deleteAction])
+        //deleteActionConfig.performsFirstActionWithFullSwipe = true
+        return deleteActionConfig
+    }
 
     /*
     // MARK: - Navigation

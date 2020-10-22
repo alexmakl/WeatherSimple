@@ -50,7 +50,7 @@
                                 <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" image="list.bullet.rectangle" catalog="system"/>
                                 <connections>
-                                    <segue destination="Buw-eM-ojX" kind="presentation" id="gt7-NN-2VD"/>
+                                    <segue destination="Buw-eM-ojX" kind="presentation" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="gt7-NN-2VD"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -80,7 +80,7 @@
             <objects>
                 <tableViewController id="Buw-eM-ojX" customClass="ManageCitiesViewController" customModule="WeatherSimple" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="eAH-ac-khP">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <stackView key="tableFooterView" opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacingType="standard" id="MIt-sx-I6G">

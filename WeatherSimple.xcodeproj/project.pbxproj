@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D3BA7220253E197500835891 /* CurrentWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BA721F253E197500835891 /* CurrentWeather.swift */; };
+		D3BA7220253E197500835891 /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BA721F253E197500835891 /* City.swift */; };
 		D3BA7225253E1AC700835891 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BA7224253E1AC700835891 /* Constants.swift */; };
 		D3BA7230253E1CDE00835891 /* AddCityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BA722F253E1CDE00835891 /* AddCityViewController.swift */; };
 		D3BA72402541EA9200835891 /* ManageCitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BA723F2541EA9200835891 /* ManageCitiesViewController.swift */; };
@@ -43,7 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D3BA721F253E197500835891 /* CurrentWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeather.swift; sourceTree = "<group>"; };
+		D3BA721F253E197500835891 /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
 		D3BA7224253E1AC700835891 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D3BA722F253E1CDE00835891 /* AddCityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCityViewController.swift; sourceTree = "<group>"; };
 		D3BA723F2541EA9200835891 /* ManageCitiesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCitiesViewController.swift; sourceTree = "<group>"; };
@@ -117,7 +117,7 @@
 		D3BA721B253E166300835891 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				D3BA721F253E197500835891 /* CurrentWeather.swift */,
+				D3BA721F253E197500835891 /* City.swift */,
 				D3BA724A2541FA4B00835891 /* CityTableViewCell.swift */,
 			);
 			path = Models;
@@ -329,7 +329,7 @@
 				D3F5F66E253AD44200760BD4 /* ViewController.swift in Sources */,
 				D3F5F66A253AD44200760BD4 /* AppDelegate.swift in Sources */,
 				D3BA7225253E1AC700835891 /* Constants.swift in Sources */,
-				D3BA7220253E197500835891 /* CurrentWeather.swift in Sources */,
+				D3BA7220253E197500835891 /* City.swift in Sources */,
 				D3F5F66C253AD44200760BD4 /* SceneDelegate.swift in Sources */,
 				D3BA72402541EA9200835891 /* ManageCitiesViewController.swift in Sources */,
 				D3BA7230253E1CDE00835891 /* AddCityViewController.swift in Sources */,
@@ -510,6 +510,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = WeatherSimple/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -528,6 +529,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = WeatherSimple/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
