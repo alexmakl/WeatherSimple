@@ -180,6 +180,7 @@
                                         <state key="normal" title="Ок"/>
                                         <connections>
                                             <action selector="addCityButton:" destination="B4R-6j-mgA" eventType="touchUpInside" id="iQA-u8-4VD"/>
+                                            <segue destination="3Iq-6P-7q0" kind="unwind" unwindAction="unwindSegue:" id="lQL-9w-3jg"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1ei-ad-7E5">
@@ -187,7 +188,6 @@
                                         <state key="normal" title="Отмена"/>
                                         <connections>
                                             <action selector="cancelButton:" destination="B4R-6j-mgA" eventType="touchUpInside" id="FdY-YM-5h9"/>
-                                            <segue destination="3Iq-6P-7q0" kind="unwind" unwindAction="cancelAction:" id="6CV-nQ-AAu"/>
                                         </connections>
                                     </button>
                                 </subviews>

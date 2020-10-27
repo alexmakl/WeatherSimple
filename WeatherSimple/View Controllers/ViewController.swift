@@ -6,9 +6,12 @@
 //
 
 import UIKit
+import CoreData
 
 class ViewController: UIViewController {
 
+    var context: NSManagedObjectContext!
+    
     @IBOutlet weak var scrollView: UIScrollView!
     
     override func viewDidLoad() {

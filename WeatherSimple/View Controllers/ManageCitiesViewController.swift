@@ -6,25 +6,29 @@
 //
 
 import UIKit
+import CoreData
 
 class ManageCitiesViewController: UITableViewController {
 
-    var cities = [City(cityName: "Москва", temperature: 10, description: "Облачно"),
-                  City(cityName: "Нижний Новгород", temperature: 15, description: "Облачно1")
-    ]
-    /*@IBOutlet weak var cityLabel: UILabel!
-    @IBOutlet weak var temperatureLabel: UILabel!
+    var context: NSManagedObjectContext!
+    var networkWeatherManager = NetworkWeatherManager()
     
-
-
-    @IBAction func TemperatureControl(_ sender: UISegmentedControl) {
-    }*/
-    func deleteObject(_ city: City) {
+    var cities = [CityWeather]()
+    //var firstCityWeather = CityWeather(cityWeatherData: CityWeatherData(name: "London", main: Main(temp: 10.0), weather: [Weather(weatherDescription: "Облачно")]))
+    //cities.append(firstCityWeather)
+    
+    //var cities = [CityWeather(cityWeatherData: CityWeatherData(name: "London", main: Main(temp: 10.0), weather: [Weather(description: "Облачно")]))
+    //]
+    
+    func deleteObject(_ city: CityWeather) {
         
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        networkWeatherManager.delegate = self
+        // ? tableView.register(CityTableViewCell.self, forCellReuseIdentifier: "CityCell")
+        //networkWeatherManager.fetchCurrentWeather(forRequestType: .cityName(cityName: "Moscow"))
     }
 
     // MARK: - Table view data source
@@ -66,5 +70,36 @@ class ManageCitiesViewController: UITableViewController {
     }
     */
 
-    @IBAction func cancelAction(_ segue: UIStoryboardSegue) {}
+    @IBAction func unwindSegue(_ segue: UIStoryboardSegue) {
+        guard let addCityVC = segue.source as? AddCityViewController else { return }
+        addCityVC.saveNewCity()
+        //cities.append(addCityVC.newCityWeather)
+        //DispatchQueue.main.async {
+        //    self.tableView.reloadData()
+        //}
+    }
+}
+
+extension ManageCitiesViewController: NetworkWeatherManagerDelegate {
+    func updateInterface(_: NetworkWeatherManager, with cityWeather: CityWeather) {
+        print(String("updateInterface cityWeather.cityName: " + cityWeather.cityName))
+        
+        guard let entity = NSEntityDescription.entity(forEntityName: "City", in: context) else { return }
+        let city = NSManagedObject(entity: entity, insertInto: context) as! City
+        city.cityName = cityWeather.cityName
+        city.temperature = cityWeather.temperature
+        city.weatherDescription = cityWeather.description
+        
+        cities.append(cityWeather)
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+    
+    func openErrorAlert() {
+        let alertController = UIAlertController(title: "Ошибка", message: "Город не найден", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Ok", style: .default)
+        alertController.addAction(action)
+        present(alertController, animated: true)
+    }
 }

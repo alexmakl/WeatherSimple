@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct City {
+struct CityWeather {
     let cityName: String
     
     let temperature: Double
@@ -16,4 +16,10 @@ struct City {
     }
     
     let description: String
+    
+    init?(cityWeatherData: CityWeatherData) {
+        cityName = cityWeatherData.name
+        temperature = cityWeatherData.main.temp
+        description = cityWeatherData.weather.first!.description
+    }
 }
