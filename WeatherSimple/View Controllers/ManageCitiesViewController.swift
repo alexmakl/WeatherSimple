@@ -8,29 +8,77 @@
 import UIKit
 import CoreData
 
-class ManageCitiesViewController: UITableViewController {
+class ManageCitiesViewController: UITableViewController, NSFetchedResultsControllerDelegate {
 
-    var context: NSManagedObjectContext!
-    var networkWeatherManager = NetworkWeatherManager()
+    let networkWeatherManager = NetworkWeatherManager()
+    var fetchResultsController: NSFetchedResultsController<CityWeather>!
     
-    var cities = [CityWeather]()
-    //var firstCityWeather = CityWeather(cityWeatherData: CityWeatherData(name: "London", main: Main(temp: 10.0), weather: [Weather(weatherDescription: "Облачно")]))
-    //cities.append(firstCityWeather)
+    var cities: [CityWeather] = []
     
-    //var cities = [CityWeather(cityWeatherData: CityWeatherData(name: "London", main: Main(temp: 10.0), weather: [Weather(description: "Облачно")]))
-    //]
-    
-    func deleteObject(_ city: CityWeather) {
+    func deleteObject(_ cityWeather: CityWeather) {
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        /*let fetchRequest: NSFetchRequest<CityWeather> = CityWeather.fetchRequest()
+        
+        do {
+            //cities = try context.fetch(fetchRequest)
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }*/
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("ManageView загрузилось")
         networkWeatherManager.delegate = self
-        // ? tableView.register(CityTableViewCell.self, forCellReuseIdentifier: "CityCell")
-        //networkWeatherManager.fetchCurrentWeather(forRequestType: .cityName(cityName: "Moscow"))
+        
+        let fetchRequest: NSFetchRequest<CityWeather> = CityWeather.fetchRequest()
+        let sortDescriptor = NSSortDescriptor(key: "cityName", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        if let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext {
+            fetchResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+            fetchResultsController.delegate = self
+            
+            do {
+                try fetchResultsController.performFetch()
+                cities = fetchResultsController.fetchedObjects!
+                print("Count: " + String(cities.count))
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+        }
     }
 
+    // MARK: - Fetch results controller delegate
+    
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        
+        switch type {
+        case .insert: guard let indexPath = newIndexPath else { break }
+            tableView.insertRows(at: [indexPath], with: .fade)
+        case .delete: guard let indexPath = indexPath else { break }
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        case .update: guard let indexPath = indexPath else { break }
+            tableView.reloadRows(at: [indexPath], with: .fade)
+        default:
+            tableView.reloadData()
+        }
+        cities = controller.fetchedObjects as! [CityWeather]
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
+    }
+    
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -41,19 +89,25 @@ class ManageCitiesViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CityCell", for: indexPath) as! CityTableViewCell
         
-        cell.cityName.text = cities[indexPath.row].cityName
-        cell.temperature.text = cities[indexPath.row].temperatureString
+        cell.cityName?.text = cities[indexPath.row].cityName
+        cell.temperature?.text = String(format: "%.0f°C", cities[indexPath.row].temperature)
         return cell
     }
     
     // MARK: - Table view delegate
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        //let city = cities[indexPath.row]
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (_, _, _) in
-            // TODO: Удалить объект из кор даты
-            self.cities.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .automatic)
+            if let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext {
+                let objectToDelete = self.fetchResultsController.object(at: indexPath)
+                context.delete(objectToDelete)
+                
+                do {
+                    try context.save()
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+            }
         }
         let deleteActionConfig = UISwipeActionsConfiguration(actions: [deleteAction])
         //deleteActionConfig.performsFirstActionWithFullSwipe = true
@@ -81,18 +135,23 @@ class ManageCitiesViewController: UITableViewController {
 }
 
 extension ManageCitiesViewController: NetworkWeatherManagerDelegate {
-    func updateInterface(_: NetworkWeatherManager, with cityWeather: CityWeather) {
-        print(String("updateInterface cityWeather.cityName: " + cityWeather.cityName))
-        
-        guard let entity = NSEntityDescription.entity(forEntityName: "City", in: context) else { return }
-        let city = NSManagedObject(entity: entity, insertInto: context) as! City
-        city.cityName = cityWeather.cityName
-        city.temperature = cityWeather.temperature
-        city.weatherDescription = cityWeather.description
-        
-        cities.append(cityWeather)
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
+    
+    func saveWeather(_: NetworkWeatherManager, with cityWeatherData: CityWeatherData) {
+        print("Сохраняем полученную погоду в CoreData")
+        if let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext {
+            let cityWeather = CityWeather(context: context)
+            cityWeather.cityName = cityWeatherData.name
+            cityWeather.temperature = cityWeatherData.main.temp
+            cityWeather.weatherDescription = cityWeatherData.weather.first!.description
+            self.cities.append(cityWeather)
+            
+            do {
+                try context.save()
+                print("Сохранение удалось")
+            } catch let error as NSError {
+                print(error.localizedDescription)
+                print("Сохранение НЕ удалось")
+            }
         }
     }
     

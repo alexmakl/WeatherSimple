@@ -10,12 +10,12 @@ import CoreData
 
 class AddCityViewController: UIViewController {
     
-    var context: NSManagedObjectContext!
     var networkWeatherManager = NetworkWeatherManager()
     var newCityWeather: CityWeather?
     
     @IBOutlet weak var cityNameTextField: UITextField!
     @IBAction func addCityButton(_ sender: UIButton) {
+        //saveNewCity()
     }
     @IBAction func cancelButton(_ sender: UIButton) {
         dismiss(animated: true)

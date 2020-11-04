@@ -11,15 +11,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let _ = (scene as? UIWindowScene) else { return }
         
-        let vc = window?.rootViewController as! ViewController
-        let mcvc = window?.rootViewController as? ManageCitiesViewController
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        vc.context = context
-        mcvc?.context = context
+        //let vc = window?.rootViewController as! PageViewController
+        //let mcvc = window?.rootViewController as? ManageCitiesViewController
+        //let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        //vc.context = context
+        //mcvc?.context = context
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
