@@ -113,6 +113,9 @@
                                         <segment title="°C"/>
                                         <segment title="°F"/>
                                     </segments>
+                                    <connections>
+                                        <action selector="segmentedControlPressed:" destination="Buw-eM-ojX" eventType="valueChanged" id="tCM-TZ-vp8"/>
+                                    </connections>
                                 </segmentedControl>
                                 <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M2P-iF-O6m">
                                     <rect key="frame" x="345" y="11" width="30" height="22"/>
@@ -168,6 +171,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="gqY-FJ-kDw"/>
+                    <connections>
+                        <outlet property="segmentedControl" destination="OSs-bY-ICZ" id="0Ny-EB-9OP"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hct-Sl-kFy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

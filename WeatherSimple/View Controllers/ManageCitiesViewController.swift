@@ -10,10 +10,16 @@ import CoreData
 
 class ManageCitiesViewController: UITableViewController, NSFetchedResultsControllerDelegate {
 
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    
     let networkWeatherManager = NetworkWeatherManager()
     var fetchResultsController: NSFetchedResultsController<CityWeather>!
     
     var cities: [CityWeather] = []
+    
+    @IBAction func segmentedControlPressed(_ sender: UISegmentedControl) {
+        tableView.reloadData()
+    }
     
     func deleteObject(_ cityWeather: CityWeather) {
         
@@ -90,7 +96,11 @@ class ManageCitiesViewController: UITableViewController, NSFetchedResultsControl
         let cell = tableView.dequeueReusableCell(withIdentifier: "CityCell", for: indexPath) as! CityTableViewCell
         
         cell.cityName?.text = cities[indexPath.row].cityName
-        cell.temperature?.text = String(format: "%.0f°C", cities[indexPath.row].temperature)
+        if segmentedControl.selectedSegmentIndex == 0 {
+            cell.temperature?.text = String(format: "%.0f °C", cities[indexPath.row].temperature)
+        } else if segmentedControl.selectedSegmentIndex == 1 {
+            cell.temperature?.text = String(format: "%.0f °F", (cities[indexPath.row].temperature*9/5 + 32))
+        }
         return cell
     }
     
