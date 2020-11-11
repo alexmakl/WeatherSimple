@@ -96,10 +96,13 @@ class ManageCitiesViewController: UITableViewController, NSFetchedResultsControl
         let cell = tableView.dequeueReusableCell(withIdentifier: "CityCell", for: indexPath) as! CityTableViewCell
         
         cell.cityName?.text = cities[indexPath.row].cityName
-        if segmentedControl.selectedSegmentIndex == 0 {
-            cell.temperature?.text = String(format: "%.0f °C", cities[indexPath.row].temperature)
-        } else if segmentedControl.selectedSegmentIndex == 1 {
-            cell.temperature?.text = String(format: "%.0f °F", (cities[indexPath.row].temperature*9/5 + 32))
+        switch segmentedControl.selectedSegmentIndex {
+            case 0:
+                cell.temperature?.text = String(format: "%.0f°", cities[indexPath.row].temperature)
+            case 1:
+                cell.temperature?.text = String(format: "%.0f°", (cities[indexPath.row].temperature*9/5 + 32))
+            default:
+                cell.temperature?.text = String(format: "%.0f°C", cities[indexPath.row].temperature)
         }
         return cell
     }
