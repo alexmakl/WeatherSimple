@@ -63,6 +63,18 @@ class ContentViewController: UIViewController, NSFetchedResultsControllerDelegat
         view.bringSubviewToFront(pageControl)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        if cities.count == 0 {
+            print("cities.count = 0")
+            let slide:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
+            slide.cityName.text = "Добавьте город"
+            slide.weatherDescription.text = ""
+            slide.temperature.text = ""
+            slide.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
+            scrollView.addSubview(slide)
+        }
+    }
+    
     func createSlides() -> [Slide] {
         for city in cities {
             let slide:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide
